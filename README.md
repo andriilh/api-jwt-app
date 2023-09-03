@@ -3,15 +3,15 @@ This project is for starter pack for JWT API applications with Laravel
 ## How To install
 
 ```bash
-git clone 
-cd
+git clone https://github.com/andriilham/api-jwt-app
+cd api-jwt-app
 composer install
 cp .env.example .env
 php artisan key:generate
 php artisan jwt:secret
 ```
 ### Setting Database configuration
-`DB_DATABSE` is name of your database
+Open `.env` file and edit your database configurations. `DB_DATABSE` is name of your database
 ```
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
