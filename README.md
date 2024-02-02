@@ -3,7 +3,7 @@ This project is for starter pack for JWT API applications with Laravel
 ## How To install
 
 ```bash
-git clone https://github.com/andriilham/api-jwt-app
+git clone https://github.com/andriilh/api-jwt-app
 cd api-jwt-app
 composer install
 cp .env.example .env
@@ -26,3 +26,6 @@ DB_PASSWORD=
 php artisan migrate
 php artisan serve
 ```
+
+### API Documentation
+You can use postman to see the api documentation. Its contain in file `laravel-api.postman_collection.json` and `laravel-jwt-api.postman_environment.json`

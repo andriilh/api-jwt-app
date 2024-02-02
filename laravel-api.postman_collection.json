@@ -1,0 +1,767 @@
+{
+	"info": {
+		"_postman_id": "060b9d39-bbf9-4fa2-81ec-2a124e84cea4",
+		"name": "laravel-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24284777"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "andri",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "andri@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "password_confirmation",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base}}/auth/register",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response JSON",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"// Check if the token is present in the response",
+							"if (jsonData && jsonData.data && jsonData.data.token) {",
+							"    // Set the environment variable 'bearer_token' with the obtained token",
+							"    postman.setEnvironmentVariable('bearer_token', jsonData.data.token);",
+							"    console.log('Bearer token set in environment variable');",
+							"} else {",
+							"    console.error('Token not found in the response');",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "andri@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base}}/auth/login",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Get the response status code",
+							"var statusCode = responseCode.code;",
+							"",
+							"// Check if the status code is not 200",
+							"if (statusCode === 200 || statusCode === 500) {",
+							"    // Set the environment variable 'bearer_token' to null",
+							"    postman.setEnvironmentVariable('bearer_token', '');",
+							"    console.log('Bearer token set to null due to non-200 status code:', statusCode);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "andri@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base}}/auth/logout",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse the response JSON",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"// Check if the token is present in the response",
+							"if (jsonData && jsonData.data && jsonData.data.token) {",
+							"    // Set the environment variable 'bearer_token' with the obtained token",
+							"    postman.setEnvironmentVariable('bearer_token', jsonData.data.token);",
+							"    console.log('Bearer token set in environment variable');",
+							"} else {",
+							"    console.error('Token not found in the response');",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "andri",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "andri@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "andri",
+							"type": "text"
+						},
+						{
+							"key": "confirm_password",
+							"value": "andri",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base}}/auth/refresh",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"auth",
+						"refresh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Me",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "andri",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "andri@mail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "andri",
+							"type": "text"
+						},
+						{
+							"key": "confirm_password",
+							"value": "andri",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}auth/me",
+					"host": [
+						"{{base_url}}auth"
+					],
+					"path": [
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Checklist",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base}}/checklist",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"checklist"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Checklist",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "First check",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base}}/checklist",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"checklist"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Checklist",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Updated checklist",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base}}/checklist/1",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"checklist",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "All Checklist Item",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Updated checklist",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base}}/checklist/2/item",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"checklist",
+						"2",
+						"item"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Checklist Item",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Second item\",\n    \"check\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base}}/checklist/2/item",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"checklist",
+						"2",
+						"item"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Checklist Item",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Updated checklist",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base}}/checklist/2/item/3",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"checklist",
+						"2",
+						"item",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Checklist Item Statuses",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "Updated checklist",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base}}/checklist/2/item/3",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"checklist",
+						"2",
+						"item",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Checklist Item Name",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Updated item\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base}}/checklist/2/rename/3",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"checklist",
+						"2",
+						"rename",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Checklist Item",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearer_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base}}/checklist/2/item/3",
+					"host": [
+						"{{base}}"
+					],
+					"path": [
+						"checklist",
+						"2",
+						"item",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTA3MTU5ODYsImV4cCI6MTY5MDcxOTU4NiwibmJmIjoxNjkwNzE1OTg2LCJqdGkiOiI2UkVsc2ZHODlEWUVFekJNIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.q4q1WGTM_fk6GbbeIxc70rFYeelEwHCgr1bh9dOUVGA",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MDY4Mzc5ODAsImV4cCI6MTcwNjg0MTU4MCwibmJmIjoxNzA2ODM3OTgwLCJqdGkiOiJiRk1xd3pDSGhUdFdYVUZGIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ko4wG9EAqQtJUy6pDk5aGrc861veO59cAhimGLJ9sho"
+		},
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000/api/"
+		}
+	]
+}

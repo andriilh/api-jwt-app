@@ -69,8 +69,8 @@ class AuthController extends Controller
 
         try {
             // this authenticates the user details with the database and generates a token
-            if (!$token = JWTAuth::attempt($input,)) {
-                return $this->sendError([], "invalid login credentials", 400);
+            if (!$token = JWTAuth::attempt($input)) {
+                return $this->sendError([], "invalid login credentials", 401);
             }
         } catch (JWTException $e) {
             return $this->sendError([], $e->getMessage(), 500);
@@ -87,10 +87,10 @@ class AuthController extends Controller
     {
         try {
             JWTAuth::invalidate(JWTAuth::getToken());
+            return $this->sendResponse([], 'Successfully logged out', 200);
         } catch (JWTException $e) {
             return $this->sendError([], $e->getMessage(), 500);
         }
-        return $this->sendResponse([], 'Successfully logged out', 200);
     }
 
     public function getUser()
