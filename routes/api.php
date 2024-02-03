@@ -41,10 +41,11 @@ Route::group(['middleware' => 'jwt.verify'], function () {
         Route::controller(ChecklistController::class)->group(function () {
             Route::get('/', 'index');
             Route::post('/', 'store');
-            Route::delete('/{id}', 'destroy');
+            Route::get('/{checklistId}', 'show');
+            Route::get('/{checklistId}/item', 'item');
+            Route::delete('/{checklistId}', 'destroy');
         });
         Route::controller(ChecklistItemController::class)->group(function () {
-            Route::get('/{checklistId}/item', 'index');
             Route::post('/{checklistId}/item', 'store');
             Route::get('/{checklistId}/item/{checklistItemId}', 'show');
             Route::put('/{checklistId}/item/{checklistItemId}', 'updateStatus');

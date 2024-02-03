@@ -2,21 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Checklist\ChecklistItemResource;
 use App\Models\ChecklistItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ChecklistItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index($checklistId)
-    {
-        $data = ChecklistItem::where('checklist_id', $checklistId)->get();
-        return $this->sendResponse($data, 'All Item of check id: ' . $checklistId, 200);
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -32,8 +24,12 @@ class ChecklistItemController extends Controller
         }
 
         $input['checklist_id'] = $checklistId;
-        $checklist = ChecklistItem::create($input);
-        return $this->sendResponse($checklist, 'Create success');
+        try {
+            $item = ChecklistItem::create($input);
+            return $this->sendResponse(new ChecklistItemResource($item), 'Create success');
+        } catch (\Exception $e) {
+            return $this->sendError([], $e->getMessage());
+        }
     }
 
     /**
@@ -41,8 +37,12 @@ class ChecklistItemController extends Controller
      */
     public function show($checklistId, $checklistItemId)
     {
-        $item = ChecklistItem::where('id', $checklistItemId)->where('checklist_id', $checklistId)->get();
-        return $this->sendResponse($item, 'Data Item');
+        try {
+            $item = ChecklistItem::where('id', $checklistItemId)->where('checklist_id', $checklistId)->first();
+            return $this->sendResponse(new ChecklistItemResource($item), 'Data Item');
+        } catch (\Exception $e) {
+            return $this->sendError([], $e->getMessage());
+        }
     }
 
     /**
@@ -53,7 +53,7 @@ class ChecklistItemController extends Controller
         $item = ChecklistItem::find($checklistItemId);
         $item->name =  $request->name;
         $item->save();
-        return $this->sendResponse($item, 'Rename Success');
+        return $this->sendResponse(new ChecklistItemResource($item), 'Rename Success');
     }
 
     public function updateStatus($checklistId, $checklistItemId)
@@ -61,7 +61,7 @@ class ChecklistItemController extends Controller
         $item = ChecklistItem::find($checklistItemId);
         $item->check = !$item->check;
         $item->save();
-        return $this->sendResponse($item, 'Update status');
+        return $this->sendResponse(new ChecklistItemResource($item), 'Update status');
     }
 
     /**
@@ -74,24 +74,4 @@ class ChecklistItemController extends Controller
         return $this->sendResponse([], 'Item deleted');
     }
 
-    public function sendResponse($data, $message, $status = 200)
-    {
-        $response = [
-            'data' => $data,
-            'message' => $message
-        ];
-
-        return response()->json($response, $status);
-    }
-
-    public function sendError($errorData, $message, $status = 500)
-    {
-        $response = [];
-        $response['message'] = $message;
-        if (!empty($errorData)) {
-            $response['data'] = $errorData;
-        }
-
-        return response()->json($response, $status);
-    }
 }

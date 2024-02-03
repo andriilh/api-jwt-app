@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Checklist\ChecklistItemResource;
+use App\Http\Resources\Checklist\ChecklistResource;
 use App\Models\Checklist;
 use App\Models\ChecklistItem;
 use Illuminate\Http\Request;
@@ -14,8 +16,8 @@ class ChecklistController extends Controller
      */
     public function index()
     {
-        $checklists = Checklist::all();
-        return $this->sendResponse($checklists, 'all checklist data');
+        $checklists = Checklist::with('items')->get();
+        return $this->sendResponse(ChecklistResource::collection($checklists), 'all checklist data');
     }
 
     /**
@@ -40,9 +42,15 @@ class ChecklistController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Checklist $checklist)
+    public function show($checklistId)
     {
-        //
+        $checklist = Checklist::find($checklistId);
+        if (!$checklist) {
+            // Checklist not found, return error response
+            return $this->sendError([], 'Checklist not found', 404);
+        }
+    
+        return $this->sendResponse(new ChecklistResource($checklist), 'Find checklist');
     }
 
     /**
@@ -64,10 +72,10 @@ class ChecklistController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($checklistId)
     {
         try {
-            $checklist = Checklist::find($id);
+            $checklist = Checklist::find($checklistId);
         } catch (\Throwable $th) {
             return $this->sendError([], $th->getMessage(), 402);
         }
@@ -75,24 +83,20 @@ class ChecklistController extends Controller
         return $this->sendResponse([], 'Data has been deleted', 200);
     }
 
-    public function sendResponse($data, $message, $status = 200)
+     /**
+     * Items of specified checklist
+     */
+    public function item($checklistId)
     {
-        $response = [
-            'data' => $data,
-            'message' => $message
-        ];
-
-        return response()->json($response, $status);
-    }
-
-    public function sendError($errorData, $message, $status = 500)
-    {
-        $response = [];
-        $response['message'] = $message;
-        if (!empty($errorData)) {
-            $response['data'] = $errorData;
+        $checklist = Checklist::where('id', $checklistId)->with('items')->first();
+        if (!$checklist) {
+            // Checklist not found, return error response
+            return $this->sendError([], 'Checklist not found', 404);
         }
-
-        return response()->json($response, $status);
+        
+        if ($checklist->items->count() === 0) {
+            return $this->sendResponse([], 'Find checklist');
+        }
+        return $this->sendResponse(ChecklistItemResource::collection($checklist->items), 'Find checklist');
     }
 }

@@ -13,7 +13,11 @@ class Checklist extends Model
         'name', 'check'
     ];
 
-    public function chelistitems(): HasMany
+    protected $casts = [
+        'check' => 'boolean',
+    ];
+
+    public function items(): HasMany
     {
         return $this->hasMany(ChecklistItem::class);
     }

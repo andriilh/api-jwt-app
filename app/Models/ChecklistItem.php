@@ -13,8 +13,12 @@ class ChecklistItem extends Model
         'checklist_id', 'name', 'check'
     ];
 
+    protected $casts = [
+        'check' => 'boolean',
+    ];
+
     public function checklist(): BelongsTo
     {
-        return $this->belongsTo(Checklist::class);
+        return $this->belongsTo(Checklist::class, 'checklist_id');
     }
 }
